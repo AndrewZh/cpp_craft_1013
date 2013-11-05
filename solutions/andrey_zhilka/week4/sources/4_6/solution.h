@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <stack>
+#include <utility>
 
 namespace task4_6
 {
@@ -12,21 +14,26 @@ namespace task4_6
 	class solution
 	{
 	private :
-		enum Error
+		enum Result
 		{
-			NON_DEFINED,
-			REDEFINITION,
-			INVALID_EXP,
-			ZERO_DIVISION
+			ERROR_NON_DEFINED,
+			ERROR_REDEFINITION,
+			ERROR_INVALID_EXP,
+			ERROR_ZERO_DIVISION,
+			STATUS_OK
 		};
 
 		mutable std::map< const std::string, int > variables_;
 
 		
 		int evaluate( const char, int, int );
-		std::string error_message( Error, int, char );
-		void evaluate( std::string );
+		std::string error_message( Result, const std::string& );
+		Result calculate( std::string );
 		void trim( std::string& );
+		std::pair< Result, int > poliz_( const std::string& );	
+		bool is_operator( const char );
+		void next_operation( std::stack< int >&, std::stack< char >& );
+
 	public:
 		explicit solution( const lines& calulator_lines );
 		int result_for( const std::string& key ) const;
